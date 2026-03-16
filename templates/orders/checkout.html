@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Checkout - Smart Dairy{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4 text-primary"><i class="fa fa-credit-card"></i> Secure Checkout</h2>
+        
+        <div class="card shadow border-0">
+            <div class="card-body p-4">
+                <form action="{{ url_for('orders_bp.checkout') }}" method="POST">
+                    
+                    <h5 class="mb-3 text-secondary">1. Delivery Details</h5>
+                    <div class="mb-4">
+                        <label class="form-label" for="delivery_slot_id">Preferred Delivery Time</label>
+                        <select class="form-select" id="delivery_slot_id" name="delivery_slot_id" required>
+                            <option value="" disabled selected>Select a Delivery Slot...</option>
+                            {% for slot in slots %}
+                            <option value="{{ slot.slot_id }}">{{ slot.name }} ({{ slot.start_time }} - {{ slot.end_time }})</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Choose when you want your dairy products delivered.</div>
+                    </div>
+
+                    <h5 class="mb-3 text-secondary">2. Payment Information</h5>
+                    <input type="hidden" name="total_amount" value="{{ total_amount }}">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Amount to Pay: <span class="text-success fs-5">${{ "%.2f"|format(total_amount) }}</span></label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Select Payment Method</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="pay_card" value="Credit Card" required>
+                            <label class="form-check-label" for="pay_card">
+                                <i class="fa fa-cc-visa text-primary"></i> Credit / Debit Card
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="pay_upi" value="UPI">
+                            <label class="form-check-label" for="pay_upi">
+                                <i class="fa fa-mobile-alt text-info"></i> UPI / Mobile Wallet
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="payment_method" id="pay_cod" value="Cash on Delivery">
+                            <label class="form-check-label" for="pay_cod">
+                                <i class="fa fa-money-bill-wave text-success"></i> Cash on Delivery
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <button type="submit" class="btn btn-success w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm">
+                        <i class="fa fa-lock"></i> Confirm Order & Pay
+                    </button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

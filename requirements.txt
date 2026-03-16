@@ -1,0 +1,9 @@
+Flask
+Werkzeug
+Jinja2
+scikit-learn
+pandas
+numpy
+bcrypt
+python-dateutil
+Waitress

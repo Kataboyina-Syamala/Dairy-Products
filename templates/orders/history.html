@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Order History - Smart Dairy{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4 text-success"><i class="fa fa-history"></i> {% if session.get('role') == 'admin' %}Manage Orders{% else %}Your Orders{% endif %}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        {% if orders %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Order ID</th>
+                            {% if session.get('role') == 'admin' %}
+                            <th>Customer</th>
+                            {% endif %}
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td class="ps-4 align-middle fw-bold">#{{ order.order_id }}</td>
+                            {% if session.get('role') == 'admin' %}
+                            <td class="align-middle">{{ order.customer_name }}</td>
+                            {% endif %}
+                            <td class="align-middle">{{ order.order_date }}</td>
+                            <td class="align-middle">${{ "%.2f"|format(order.total_amount) }}</td>
+                            <td class="align-middle">
+                                {% if order.status == 'Confirmed' %}
+                                <span class="badge bg-success rounded-pill px-3">{{ order.status }}</span>
+                                {% elif order.status == 'Pending' %}
+                                <span class="badge bg-warning rounded-pill px-3 text-dark">{{ order.status }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary rounded-pill px-3">{{ order.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i> View</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info py-4 text-center">
+            <h4>No orders found.</h4>
+            {% if session.get('role') != 'admin' %}
+            <p>You haven't placed any orders yet.</p>
+            <a href="{{ url_for('products_bp.catalog') }}" class="btn btn-primary mt-2">Start Shopping</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

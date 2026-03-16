@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Home - Smart Dairy{% endblock %}
+{% block content %}
+<div class="row align-items-center mb-5">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold text-success mb-3">Fresh Dairy Delivered Daily</h1>
+        <p class="lead text-muted">Experience the purest milk, cheese, ghee, and curd sourced directly from our smart farms, optimized by Machine Learning for guaranteed freshness.</p>
+        <a href="{{ url_for('products_bp.catalog') }}" class="btn btn-success btn-lg mt-3">Shop Products <i class="fa fa-arrow-right"></i></a>
+    </div>
+    <div class="col-lg-6 text-center">
+        <!-- Placeholder for a beautiful dairy hero image -->
+        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=800" class="img-fluid rounded shadow-lg" alt="Fresh Milk" style="max-height: 400px; object-fit: cover;">
+    </div>
+</div>
+
+<div class="row mt-5 text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-5">
+                <i class="fa-solid fa-truck-fast text-success fa-3x mb-3"></i>
+                <h4 class="card-title">Subscribe & Save</h4>
+                <p class="card-text text-muted">Set up your daily milk delivery schedule once and let us handle the rest automatically.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-5">
+                <i class="fa-solid fa-chart-line text-primary fa-3x mb-3"></i>
+                <h4 class="card-title">AI Demand Prediction</h4>
+                <p class="card-text text-muted">Our smart inventory uses Machine Learning to ensure we never run out of your favorite products.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-5">
+                <i class="fa-solid fa-shield-halved text-warning fa-3x mb-3"></i>
+                <h4 class="card-title">Pure & Secure</h4>
+                <p class="card-text text-muted">100% natural goods with a streamlined, secure checkout and tracking process.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Subscribe to {{ product.name }} - Smart Dairy{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body p-4">
+                <h3 class="mb-4 text-success"><i class="fa fa-calendar-check"></i> Subscribe to Daily Delivery</h3>
+                
+                <div class="row mb-4 bg-light p-3 rounded align-items-center">
+                    <div class="col-auto">
+                        {% if product.image %}
+                        <img src="{{ product.image }}" alt="{{ product.name }}" style="width: 80px; height: 80px; object-fit: cover;" class="rounded">
+                        {% else %}
+                        <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fa fa-box fa-2x"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <h4 class="mb-0">{{ product.name }}</h4>
+                        <p class="text-muted mb-0">Price per unit: ${{ "%.2f"|format(product.price) }}</p>
+                    </div>
+                </div>
+
+                <form action="{{ url_for('subscriptions_bp.subscribe', product_id=product.product_id) }}" method="POST">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Daily Quantity</label>
+                            <input type="number" class="form-control" name="quantity" value="1" min="1" required id="qtyInput">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Duration (Days)</label>
+                            <select class="form-select" name="duration" id="durationInput">
+                                <option value="7">1 Week (7 Days)</option>
+                                <option value="15">15 Days</option>
+                                <option value="30" selected>1 Month (30 Days)</option>
+                                <option value="60">2 Months (60 Days)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" name="start_date" required id="dateInput">
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Estimated Total Configuration Cost:</span>
+                            <h4 class="mb-0 fw-bold text-dark" id="estimatedTotal">$0.00</h4>
+                        </div>
+                        <small class="text-muted d-block mt-2">Cost is calculated as (Price × Quantity × Duration). You will be billed weekly based on actual deliveries.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-3 mt-3 fw-bold"><i class="fa fa-truck-fast"></i> Start Subscription</button>
+                    <a href="{{ url_for('products_bp.catalog') }}" class="btn btn-outline-secondary w-100 py-2 mt-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JS to auto-fill today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = today;
+    document.getElementById('dateInput').min = today;
+
+    // Simple calculator for estimated cost
+    const price = {{ product.price }};
+    const qtyInput = document.getElementById('qtyInput');
+    const durInput = document.getElementById('durationInput');
+    const totalEl = document.getElementById('estimatedTotal');
+
+    function calcTotal() {
+        const total = price * parseInt(qtyInput.value) * parseInt(durInput.value);
+        totalEl.textContent = '$' + total.toFixed(2);
+    }
+
+    qtyInput.addEventListener('input', calcTotal);
+    durInput.addEventListener('change', calcTotal);
+    calcTotal(); // Initial calculation
+</script>
+{% endblock %}
